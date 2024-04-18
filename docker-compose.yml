@@ -1,26 +1,17 @@
 version: '3.8'
- 
+
 services:
-  nodejs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nodejs-container1
-    #restart: unless-stopped
+  king-15:
+    image: david-15
+    build: .
     ports:
-      - "3000:3000"
+      - '6009:3000'
     environment:
-      MONGO_URI: mongodb://mongo:27017/hostel
+      - MONGO_URI:'mongodb://127.0.0.1:27017/hostel'
     depends_on:
-      - mongo
-  mongo:
-             container_name: mongodb-container1
-             image: mongo
-             volumes:
-               - ./testdata:/data/db
-             ports:
-               - '27017:27017'
-             healthcheck: 
-              test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]  # Health check command for MongoDB
-              interval: 10s
-              retries: 5
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
